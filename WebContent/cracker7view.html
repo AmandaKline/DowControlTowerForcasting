@@ -33,14 +33,7 @@
 	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="../dist/jquery.imagemapster.js"></script>
-	
-	<STYLE TYPE="text/css">
-	p, div {
-	 font-family: Arial, Helvetica, Sans Serif;
-	 font-size: 12px;
-	 font-weight: normal;
-	}
-	</STYLE>
+	<script type="text/javascript" src="imagemapster/jquery.imagemapster.js"></script>
 </head>
 
 <body>
@@ -86,8 +79,12 @@
             mapKey: 'name',
             listKey: 'name',
             onClick: function (e) {
-                var newToolTip = defaultDipTooltip;
+            	var newToolTip = defaultDipTooltip;
+                
+                // update text depending on area selected
                 $('#selections').html(xref[e.key]);
+                
+                // if Asparagus selected, change the tooltip
                 if (e.key==='asparagus') {
                 	newToolTip = "OK. I know I have come down on the dip before, but let's be real. Raw asparagus without any of that " +
                 			"delicious ranch and onion dressing slathered all over it is not so good.";
