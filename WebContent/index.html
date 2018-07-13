@@ -554,8 +554,7 @@
 
 						// Makes the city circles clickable.
 						google.maps.event.addListener(cityCircle,'click',function() {
-							var win = window.open(this.name, '_blank');
-							win.focus();
+							var win = window.open(this.name, '_self');
 						});
 					}
 
