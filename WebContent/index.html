@@ -1,57 +1,604 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="ISO-8859-1">
-	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<title>Dow Control Tower Forecasting</title>
+	<head>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  <title>Dow Control Tower Forecasting</title>
+	</head>
 
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-</head>
-<body>
-	<h1>Dow Control Tower Forecasting</h1>
-	<br>	
-	<h2>Performance Center</h2>
-	<h4>Probability of Failure</h4>
-	<table class="table table-bordered table-striped">
-		<thead>
-			<tr>
-				<th>Plant<br></th>
-				<th>Sunday</th>
-				<th>Monday</th>
-				<th>Tuesday</th>
-				<th>Wednesday</th>
-				<th>Thursday</th>
-				<th>Friday</th>
-				<th>Saturday</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><b><a href="cracker7.html">Cracker 7</a></b></td>
-				<td>61%</td>
-				<td>66%</td>
-				<td>67%</td>
-				<td>69%</td>
-				<td>70%</td>
-				<td>74%</td>
-				<td>76%</td>
-			</tr>
-			<tr>
-				<td><b><a href="cracker8.html">Cracker 8</a></b></td>
-				<td>4%</td>
-				<td>7%</td>
-				<td>9%</td>
-				<td>15%</td>
-				<td>27%</td>
-				<td>42%</td>
-				<td>55%</td>
-			</tr>
-		</tbody>
-	</table>
-</body>
+	 <style>
+		/* Always set the map height explicitly to define the size of the div
+		* element that contains the map. */
+		#map {
+			height: 94.5%;
+			margin-top: 2.8%;
+		}
+
+		/* Makes the page fill the window. */
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		#description {
+			font-family: Roboto;
+			font-size: 15px;
+			font-weight: 300;
+		}
+
+		#infowindow-content .title {
+			font-weight: bold;
+		}
+
+		#infowindow-content {
+			display: none;
+		}
+
+		#map #infowindow-content {
+			display: inline;
+		}
+
+		.pac-card {
+			margin: 10px 10px 0 0;
+			border-radius: 2px 0 0 2px;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			outline: none;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+			background-color: #fff;
+			font-family: Roboto;
+		}
+
+		#pac-container {
+			padding-bottom: 12px;
+			margin-right: 12px;
+		}
+
+		.pac-controls {
+			display: inline-block;
+			padding: 5px 11px;
+		}
+
+		.pac-controls label {
+			font-family: Roboto;
+			font-size: 13px;
+			font-weight: 300;
+		}
+
+		#pac-input {
+			background-color: #fff;
+			font-family: Roboto;
+			font-size: 15px;
+			font-weight: 300;
+			margin-left: 12px;
+			padding: 0 11px 0 13px;
+			text-overflow: ellipsis;
+			width: 400px;
+		}
+
+		#pac-input:focus {
+			border-color: #4d90fe;
+		}
+
+		#title {
+			color: #fff;
+			background-color: #4d90fe;
+			font-size: 25px;
+			font-weight: 500;
+			padding: 6px 12px;
+		}
+		#target {
+			width: 345px;
+		}
+		
+		.dropdown-submenu {
+			position: relative;
+		}
+
+		.dropdown-submenu>.dropdown-menu {
+			top: 0;
+			left: 100%;
+			margin-top: -6px;
+			margin-left: -1px;
+			-webkit-border-radius: 0 6px 6px 6px;
+			-moz-border-radius: 0 6px 6px;
+			border-radius: 0 6px 6px 6px;
+		}
+
+		.dropdown-submenu:hover>.dropdown-menu {
+			display: block;
+		}
+
+		.dropdown-submenu>a:after {
+			display: block;
+			content: " ";
+			float: right;
+			width: 0;
+			height: 0;
+			border-color: transparent;
+			border-style: solid;
+			border-width: 5px 0 5px 5px;
+			border-left-color: #ccc;
+			margin-top: 5px;
+			margin-right: -10px;
+		}
+
+		.dropdown-submenu:hover>a:after {
+			border-left-color: #fff;
+		}
+
+		.dropdown-submenu.pull-left {
+			float: none;
+		}
+
+		.dropdown-submenu.pull-left>.dropdown-menu {
+			left: -100%;
+			margin-left: 10px;
+			-webkit-border-radius: 6px 0 6px 6px;
+			-moz-border-radius: 6px 0 6px 6px;
+			border-radius: 6px 0 6px 6px;
+		}
+	</style>
+	<body>
+		<div class="navbar navbar-inverse navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Dow Control Tower Forecasting</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="index.html">World</a></li>
+						<li>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Manfaturing Complexs<b class="caret"></b></a>
+							<ul class="dropdown-menu multi-level">
+								<li class="dropdown-submenu">
+									<a href="manufacturingComplex.html" class="dropdown-toggle" data-toggle="dropdown">Freeport</a>
+									<ul class="dropdown-menu">
+										<li class="dropdown-submenu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant A</a>
+											<ul class="dropdown-menu">
+											  <li><a href="#">TX1</a></li>
+											  <li><a href="#">TX2</a></li>
+											  <li><a href="#">TX3</a></li>
+													</ul>
+												</li>
+												<li class="dropdown-submenu">
+													<a href="plantB.html" class="dropdown-toggle" data-toggle="dropdown">Plant B</a>
+													<ul class="dropdown-menu">
+														<li><a href="block.html">TX7</a></li>
+														<li><a href="#">TX8</a></li>
+														<li><a href="#">TX9</a></li>
+													</ul>
+												</li>
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Oyster Creek</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">TX4</a></li>
+														<li><a href="#">TX5</a></li>
+														<li><a href="#">TX6</a></li>
+													</ul>
+											</ul>
+										</li>
+										<li class="dropdown-submenu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Midland</a>
+											<ul class="dropdown-menu">
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant A</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">ML1</a></li>
+														<li><a href="#">ML2</a></li>
+														<li><a href="#">ML3</a></li>
+													</ul>
+												</li>
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant B</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">ML4</a></li>
+														<li><a href="#">ML5</a></li>
+														<li><a href="#">ML6</a></li>
+													</ul>
+												</li>
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant C</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">ML7</a></li>
+														<li><a href="#">ML8</a></li>
+														<li><a href="#">ML9</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li class="dropdown-submenu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Taft</a>
+											<ul class="dropdown-menu">
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant 1</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">Tt1</a></li>
+														<li><a href="#">Tt2</a></li>
+														<li><a href="#">Tt3</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li class="dropdown-submenu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">New Town</a>
+											<ul class="dropdown-menu">
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant 1</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">NT1</a></li>
+														<li><a href="#">NT2</a></li>
+														<li><a href="#">NT3</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li class="dropdown-submenu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Louiseville</a>
+											<ul class="dropdown-menu">
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant 1</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">LV1</a></li>
+														<li><a href="#">LV2</a></li>
+														<li><a href="#">LV3</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+										<li class="dropdown-submenu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Milsdale</a>
+											<ul class="dropdown-menu">
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Plant 1</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">LV1</a></li>
+														<li><a href="#">LV2</a></li>
+														<li><a href="#">LV3</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<!--
+								 <li class="dropdown-submenu">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Midland</a>
+									<ul class="dropdown-menu">
+										<li class="dropdown-submenu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">Cracker 8</a>
+											<ul class="dropdown-menu">
+												<li class="dropdown-submenu">
+													<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts</a>
+													<ul class="dropdown-menu">
+														<li><a href="#">Furnace 1</a></li>
+														<li><a href="#">Furncae 2</a></li>
+														<li><a href="#">Something else here</a></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								-->
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+		<div id="map">
+			<script>
+				// This creates circles on the map, representing populations in North
+				// America.
+
+				// First, create an object containing LatLng, population for each city (27), and
+				// status (circle color).
+				var citymap = {
+					midland: {
+						center: {lat: 43.5953372, lng: -84.2137409},
+						population: 630,
+						status: 1,
+						url: 'http://www.midland-mi.org'
+					},
+					auburn: {
+						center: {lat: 43.5877328, lng: -84.1125002},
+						population: 8,
+						status: 2,
+						url: 'http://www.auburnmi.org'
+					},
+					hayward: {
+						center: {lat: 37.6302235, lng: -122.12684},
+						population: 5,
+						status: 1,
+						url: ''
+					},
+					bayport: {
+						center: {lat: 29.6474167, lng: -95.0444494},
+						population: 9,
+						status: 1,
+						url: ''
+					},
+					lonestar: {
+						center: {lat:29.731673, lng: -95.1041773},
+						population: 110,
+						status: 1,
+						url: ''
+					},
+					southcharleston: {
+						center: {lat: 38.3689991, lng: -81.6830175},
+						population: 150,
+						status: 1,
+						url: ''
+					},
+					dalton: {
+						center: {lat: 34.633453, lng: -84.9281734},
+						population: 15,
+						status: 1,
+						url: ''
+					},
+					freeport001: {
+						center: {lat: 28.9881808, lng: -95.4003262},
+						population: 900,
+						status: 1,
+						url: 'https://amandakline.github.io/DowControlTowerForcasting/WebContent/plantB.html'
+					},
+					freeport002: {
+						center: {lat: 28.9815705, lng: -95.3500576},
+						population: 115,
+						status: 2,
+						url: ''
+					},
+					freeport003: {
+						center: {lat: 28.9515119, lng: -95.3221469},
+						population: 400,
+						status: 3,
+						url: ''
+					},
+					harborbeach: {
+						center: {lat: 43.8466079, lng: -82.6490951},
+						population: 6,
+						status: 1,
+						url: 'http://www.bing.com'
+					},
+					hillsdale: {
+						center: {lat: 41.9359363, lng: -84.6495271},
+						population: 3,
+						status: 1
+					},
+					channahon: {
+						center: {lat: 41.4022542, lng: -88.199572},
+						population: 15,
+						status: 1,
+						url: ''
+					},
+					laporte: {
+						center: {lat: 29.7117139, lng: -95.0793163},
+						population: 26,
+						status: 1,
+						url: ''
+					},
+					bellerose: {
+						center: {lat: 30.0065739, lng: -91.1115944},
+						population: 8,
+						status: 1,
+						url: ''
+					},
+					pittsburg: {
+						center: {lat: 38.0253474, lng: -121.8586412},
+						population: 140,
+						status: 1,
+						url: ''
+					},
+					plaquemine: {
+						center: {lat: 30.3265907, lng: -91.2399003},
+						population: 440,
+						status: 1,
+						url: ''
+					},
+					hahnville: {
+						center: {lat: 29.9847936, lng: -90.4487736},
+						population: 225,
+						status: 1,
+						url: ''
+					},
+					baycity: {
+						center: {lat: 28.998624, lng: -96.1490246},
+						population: 13,
+						status: 1,
+						url: ''
+					},
+					seadrift: {
+						center: {lat: 28.5127566, lng: -96.7689085},
+						population: 310,
+						status: 1,
+						url: ''
+					},
+					texascity: {
+						center: {lat: 29.3720525, lng: -94.9324593},
+						population: 400,
+						status: 1,
+						url: ''
+					},
+					groves: {
+						center: {lat: 30.0130025, lng: -94.0291957},
+						population: 110,
+						status: 1,
+						url: ''
+					},
+					croydon: {
+						center: {lat: 40.0920198, lng: -74.8734915},
+						population: 85,
+						status: 1,
+						url: ''
+					},
+					knoxville: {
+						center: {lat: 35.9609579, lng: -83.9411228},
+						population: 30,
+						status: 1,
+						url: ''
+					},
+					louisville: {
+						center: {lat: 38.2145791, lng: -85.84395},
+						population: 80,
+						status: 1,
+						url: ''
+					},
+					ringwood: {
+						center: {lat: 42.3894097, lng: -88.2953256},
+						population: 9,
+						status: 1,
+						url: ''
+					},
+					charlotte: {
+						center: {lat: 35.2625437, lng: -80.7599827},
+						population: 5,
+						status: 1,
+						url: ''
+					}
+				};
+
+				// This adds a search box to a map, using the Google Place Autocomplete
+				// feature. People can enter geographical searches. The search box will return a
+				// pick list containing a mix of places and predicted search terms.
+				function initAutocomplete() {
+					// Create the map.
+					var map = new google.maps.Map(document.getElementById('map'), {
+						zoom: 4.15,
+						center: {lat: 37.090, lng: -95.712},
+						mapTypeId: 'hybrid'
+					});
+
+					// Add the circle for this city to the map.
+					var cityCircle = new google.maps.Circle({});
+
+					// Construct the circle for each value in citymap.
+					// Note: We scale the area of the circle based on the population.
+					for (var city in citymap) {
+
+						if (citymap[city].status == 1) {
+							// Add the circle for this city to the map.
+							cityCircle = new google.maps.Circle({
+								strokeColor: '#00ff00',
+								strokeOpacity: 0.8,
+								strokeWeight: 2,
+								fillColor: '#00ff00',
+								fillOpacity: 0.20,
+								clickable: true,
+								map: map,
+								center: citymap[city].center,
+								radius: Math.sqrt(citymap[city].population) * 100,
+								name: citymap[city].url
+							});
+						}
+						else if (citymap[city].status == 2) {
+							// Add the circle for this city to the map.
+							cityCircle = new google.maps.Circle({
+								strokeColor: '#ffb900',
+								strokeOpacity: 0.8,
+								strokeWeight: 2,
+								fillColor: '#ffb900',
+								fillOpacity: 0.20,
+								clickable: true,
+								map: map,
+								center: citymap[city].center,
+								radius: Math.sqrt(citymap[city].population) * 100,
+								name: citymap[city].url
+							});
+						}
+						else if (citymap[city].status == 3) {
+							// Add the circle for this city to the map.
+							cityCircle = new google.maps.Circle({
+								strokeColor: '#FF0000',
+								strokeOpacity: 0.8,
+								strokeWeight: 2,
+								fillColor: '#FF0000',
+								fillOpacity: 0.20,
+								clickable: true,
+								map: map,
+								center: citymap[city].center,
+								radius: Math.sqrt(citymap[city].population) * 100,
+								name: citymap[city].url
+							});
+						}
+
+						// Makes the city circles clickable.
+						google.maps.event.addListener(cityCircle,'click',function() {
+							var win = window.open(this.name, '_blank');
+							win.focus();
+						});
+					}
+
+					// Create the search box and link it to the UI element.
+					var input = document.getElementById('pac-input');
+					var searchBox = new google.maps.places.SearchBox(input);
+					map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+					
+					// Bias the SearchBox results towards current map's viewport.
+					map.addListener('bounds_changed', function() {
+						searchBox.setBounds(map.getBounds());
+					});
+
+					var markers = [];
+					// Listen for the event fired when the user selects a prediction and retrieve
+					// more details for that place.
+					searchBox.addListener('places_changed', function() {
+						var places = searchBox.getPlaces();
+
+						// Clear out the old markers.
+							markers.forEach(function(marker) {
+								marker.setMap(null);
+						});
+						markers = [];
+
+						// For each place, get the icon, name and location.
+						var bounds = new google.maps.LatLngBounds();
+						places.forEach(function(place) {
+							if (!place.geometry) {
+								console.log("Returned place contains no geometry");
+								return;
+							}
+							var icon = {
+								url: place.icon,
+								size: new google.maps.Size(71, 71),
+								origin: new google.maps.Point(0, 0),
+								anchor: new google.maps.Point(17, 34),
+								scaledSize: new google.maps.Size(25, 25)
+							};
+
+							// Create a marker for each place.
+							markers.push(new google.maps.Marker({
+								map: map,
+								icon: icon,
+								title: place.name,
+								position: place.geometry.location
+							}));
+
+							if (place.geometry.viewport) {
+								// Only geocodes have viewport.
+								bounds.union(place.geometry.viewport);
+							} else {
+								bounds.extend(place.geometry.location);
+							}
+						});
+						map.fitBounds(bounds);
+					});
+				}
+			</script>
+		</div>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRvVUdbLnhyRMzVp_4by4DiYroSxsgH7o&libraries=places&callback=initAutocomplete"
+        async defer></script>
+    </body>
 </html>
